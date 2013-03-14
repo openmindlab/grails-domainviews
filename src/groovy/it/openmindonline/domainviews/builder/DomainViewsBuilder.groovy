@@ -31,7 +31,7 @@ class DomainViewsBuilder{
     GroovyClassLoader classLoader = new GroovyClassLoader(DomainViewsBuilder.classLoader)
     Class domainsViews
     try {
-      domainsViews = classLoader.loadClass('DomainsViews')
+      domainsViews = classLoader.loadClass('DomainViews')
       log.info "DomainsViews.groovy found"
       domainsViews.metaClass.views = DomainViewsBuilder.&views
       domainsViews.newInstance().run()
