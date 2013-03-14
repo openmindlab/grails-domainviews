@@ -14,10 +14,10 @@ class DomainViewsService {
       viewDef.properties.each{
         switch(it.class) {
           case String:
-            map[it] = obj[it]
+            map[it] = obj?."$it"
           break
           case View:
-            map[it._name] = view(it,obj[it._name]);
+            map[it._name] = view(it,obj?."${it._name}");
           break
         }
       }

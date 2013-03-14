@@ -316,6 +316,36 @@ class DomainViewsServiceTests {
     assert brandView.properties[0]=='name'
   }
 
+  @Test
+  void "apply view handle direct null property"(){
+    setViews {
+      vehicleTest {
+        standard {
+          contractTest
+        }
+      }
+    }
+
+    def vehicleTest = VehicleTest.build(contractTest:null)
+    def obj = domainViewsService.applyView('standard', vehicleTest)
+  }
+
+  @Test
+  void "apply view handle nested null property"(){
+    setViews {
+      vehicleTest {
+        standard {
+          contractTest{
+            data ALL
+          }
+        }
+      }
+    }
+
+    def vehicleTest = VehicleTest.build(contractTest:null)
+    def obj = domainViewsService.applyView('standard', vehicleTest)
+  }
+
   private setViews(Closure cl){
     domainViewsService.grailsApplication.config.domainViews = DomainViewsBuilder.views(cl)
   }
