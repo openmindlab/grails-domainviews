@@ -67,6 +67,7 @@ class DomainViewsServiceTests {
       }
     }
     def modelTest = ModelTest.build(name:'Astra', brandTest: BrandTest.build(name:'Opel'))
+    domainViewsService.normalize ModelTest
     def map = domainViewsService.applyView('standard',modelTest)
 
     assert map.containsKey('brandTest')
@@ -89,6 +90,7 @@ class DomainViewsServiceTests {
       }
     }
     def modelTest = ModelTest.build(name:'Astra', brandTest: BrandTest.build(name:'Opel'))
+    domainViewsService.normalize ModelTest
     def map = domainViewsService.applyView('standard',modelTest)
     assert map.brandTest
     assert map.brandTest.size()==1

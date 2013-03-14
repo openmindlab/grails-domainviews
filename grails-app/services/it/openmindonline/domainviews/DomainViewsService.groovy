@@ -37,7 +37,6 @@ class DomainViewsService {
     }
 
     def applyView(String viewName, obj){
-      normalize obj.class
       def viewDef = getViewsForDomainObject(obj.class)?."$viewName" 
       if(!viewDef) return obj
       view(viewDef,obj)
