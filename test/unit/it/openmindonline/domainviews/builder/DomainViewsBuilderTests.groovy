@@ -144,4 +144,17 @@ class DomainViewsBuilderTests {
     assert views.model.views.test2
     assert views.model.views.test2.properties
   }
+
+  @Test
+  void "all properties of the first level domain"(){
+    def views = DomainViewsBuilder.views{
+      model {
+        standard ALL
+      }
+    }
+
+    assert views
+    assert views.model
+    assert views.model.views.standard instanceof ViewAll
+  }
 }

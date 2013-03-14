@@ -52,17 +52,23 @@ class DomainViewsService {
     void normalize(clazz){
       def views = getViewsForDomainObject(clazz)
       def domainClass = grailsApplication.getDomainClass(clazz.name)
-      views.findAll{_,view -> !view._normalized}.each{ _,view ->
-        normalizeView domainClass, view
+      views.findAll{_,view -> !view._normalized}.each{ viewName,view ->
+        views[viewName] = normalizeView domainClass, view
       }
     }
 
-    private normalizeView(domainClass, view){
+    private normalizeView(domainClass, View view){
       view.properties = view.properties.collect{property -> 
         normalizeProperty(domainClass, property)
       }
       view._normalized = true
-      [view._name, view]
+      view
+    }
+
+    private normalizeView(domainClass, ViewAll view){
+      def newView = new View(_name:view._name)
+      newView.properties = domainClass.properties.findAll{it.name!='version'}*.name
+      normalizeView domainClass, newView
     }
 
     private normalizeProperty(domainClass, String propertyName){
@@ -79,7 +85,7 @@ class DomainViewsService {
         if (prop.association){
           def newView = new View(_name: view._name)
           newView.properties = prop.referencedDomainClass.properties.findAll{it.name!='version'}*.name
-          return normalizeView(prop.referencedDomainClass, newView)[1]
+          normalizeView(prop.referencedDomainClass, newView)
         }else{
           view._name
         }
@@ -87,8 +93,7 @@ class DomainViewsService {
 
     private normalizeProperty(domainClass, View view){
       def prop = domainClass.getPropertyByName(view._name)
-      def normalizedView = normalizeView(prop.referencedDomainClass, view)[1]
-      return normalizedView
+      normalizeView(prop.referencedDomainClass, view)
     }
 
 }
