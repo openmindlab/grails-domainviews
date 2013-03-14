@@ -1,0 +1,23 @@
+<plugin name='domain-views' version='0.1' grailsVersion='2.2 &gt; *'>
+  <author>Your name</author>
+  <title>Domain Views Plugin</title>
+  <description>Brief summary/description of the plugin.
+</description>
+  <documentation>http://grails.org/plugin/domain-views</documentation>
+  <type>DomainViewsGrailsPlugin</type>
+  <resources>
+    <resource>it.openmindonline.domainviews.DomainViewsService</resource>
+  </resources>
+  <repositories>
+    <repository name='grailsCentral' url='http://grails.org/plugins' />
+  </repositories>
+  <dependencies />
+  <plugins>
+    <test>
+      <plugin group='org.grails.plugins' name='build-test-data' version='2.0.4' />
+      <plugin group='org.grails.plugins' name='hibernate' version='2.2.1' />
+    </test>
+  </plugins>
+  <runtimePluginRequirements />
+  <behavior />
+</plugin>
