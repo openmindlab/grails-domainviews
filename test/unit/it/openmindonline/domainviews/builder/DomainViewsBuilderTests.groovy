@@ -157,4 +157,27 @@ class DomainViewsBuilderTests {
     assert views.model
     assert views.model.views.standard instanceof ViewAll
   }
+
+  @Test
+  void "all properties with extension"(){
+    def views = DomainViewsBuilder.views{
+      model {
+        standard {
+          EXTENDS
+          brand {
+            name
+          }
+        }
+      }
+    }
+
+    assert views
+    assert views.model
+    assert views.model.views.standard
+    assert views.model.views.standard instanceof View
+    assert views.model.views.standard.properties
+    assert views.model.views.standard.properties.size()==1
+    assert views.model.views.standard._toExtend
+
+  }
 }

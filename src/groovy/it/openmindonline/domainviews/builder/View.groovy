@@ -7,6 +7,7 @@ class View{
   
   def _name
   def _normalized = false
+  def _toExtend   = false 
   def properties = []
 
   static make(String _name,Closure cl){
@@ -17,11 +18,9 @@ class View{
     return view
   }
 
-  static make(String _name, String whichProperties){
-    switch(whichProperties){
-      case ALL:
-        return new ViewAll(_name:_name)
-    }
+  static make(String _name, ViewAll view){
+    view._name = _name
+    view
   }
 
   def methodMissing(String method, args){
@@ -34,9 +33,19 @@ class View{
     properties << property
   }
 
-  static ALL = "all"
+  def getEXTENDS(){
+    _toExtend = true
+  }
+
+  def getALL(){
+    new ViewAll()
+  }
 }
 
 class ViewAll extends View{
 
+}
+
+class ExtendsView extends View{
+  View _parent
 }

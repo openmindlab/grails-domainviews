@@ -288,6 +288,34 @@ class DomainViewsServiceTests {
   }
 
   @Test
+  void "normalize EXTENDS overriding properties with explict specified properties"(){
+    setViews {
+      modelTest {
+        standard {
+          EXTENDS
+          brandTest {
+            name
+          }
+        }
+      }
+    }
+
+    domainViewsService.normalize(ModelTest)
+    def modelTestView = views.modelTest.views.standard
+
+    assert modelTestView
+    assert modelTestView.properties
+    assert modelTestView.properties.size()==4
+
+    def brandView = modelTestView.properties.find{it instanceof View}
+    assert brandView
+    assert brandView.properties
+    assert brandView.properties.size()==1
+    assert brandView.properties[0]=='name'
+  }
+
+  ///          APPLY VIEW TESTS ------------------------
+  @Test
   void 'view passed by thread local'(){
     setViews {
       modelTest{

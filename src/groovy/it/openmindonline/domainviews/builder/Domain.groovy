@@ -4,10 +4,9 @@ import org.apache.commons.logging.LogFactory
 
 class Domain{
   static log = LogFactory.getLog("it.openmindonline.domainviews.builder.Domain")
-  static ALL = "all"
-  
+
   def views=[:]
-  
+
   static make(Closure cl){
     expands new Domain(), cl
   }
@@ -22,5 +21,9 @@ class Domain{
   def methodMissing(String method, args){
     log.info "view $method"
     views[method] = View.make(method,args[0])
+  }
+
+  def getALL(){
+    new ViewAll()
   }
 }

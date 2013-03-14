@@ -58,7 +58,15 @@ class DomainViewsService {
     }
 
     private normalizeView(domainClass, View view){
-      view.properties = view.properties.collect{property -> 
+      def properties = view._toExtend ? 
+        domainClass.properties
+          .findAll{it.name!='version'}*.name.collect{ domainProperty ->
+            view.properties.find{
+              viewProperty -> viewProperty._name == domainProperty
+            } ?: domainProperty
+          } : view.properties
+
+      view.properties = properties.collect{property -> 
         normalizeProperty(domainClass, property)
       }
       view._normalized = true
