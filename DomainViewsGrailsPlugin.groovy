@@ -1,4 +1,5 @@
 import it.openmindonline.domainviews.builder.DomainViewsBuilder
+import it.openmindonline.domainviews.DomainViewsService
 
 class DomainViewsGrailsPlugin {
     // the plugin version
@@ -59,7 +60,16 @@ Brief summary/description of the plugin.
         // TODO Implement post initialization spring config (optional)
         // 
         
+
         application.config.domainViews = DomainViewsBuilder.load()
+        def domainViewsService = new DomainViewsService(grailsApplication: application)
+
+        println "******************************** Normalizing views ********************************"
+        application.config.domainViews.each{domainName,_ ->
+            def domainClass = application.getArtefactByLogicalPropertyName("Domain",domainName)
+            domainViewsService.normalize domainClass.clazz
+            println "- $domainName [${domainClass.clazz.name}] OK"
+        }
     }
 
     def onChange = { event ->
