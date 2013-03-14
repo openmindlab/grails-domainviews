@@ -1,3 +1,5 @@
+import it.openmindonline.domainviews.builder.DomainViewsBuilder
+
 class DomainViewsGrailsPlugin {
     // the plugin version
     def version = "0.1"
@@ -5,8 +7,12 @@ class DomainViewsGrailsPlugin {
     def grailsVersion = "2.2 > *"
     // resources that are excluded from plugin packaging
     def pluginExcludes = [
-        "grails-app/views/error.gsp",
-        "grails-app/domain/it/openmindonline/domainviews/test/dataobjects/*"
+        "grails-app/views/error.gsp"
+        ,"grails-app/domain/it/openmindonline/domainviews/test/dataobjects/Brand.groovy"
+        ,"grails-app/domain/it/openmindonline/domainviews/test/dataobjects/Model.groovy"
+        ,"grails-app/domain/it/openmindonline/domainviews/test/dataobjects/Contract.groovy"
+        ,"grails-app/domain/it/openmindonline/domainviews/test/dataobjects/Vehicle.groovy"
+        ,"grails-app/domain/it/openmindonline/domainviews/test/dataobjects/ContractVersion.groovy"
     ]
 
     // TODO Fill in these fields
@@ -51,6 +57,9 @@ Brief summary/description of the plugin.
 
     def doWithApplicationContext = { applicationContext ->
         // TODO Implement post initialization spring config (optional)
+        // 
+        
+        application.config.domainViews = DomainViewsBuilder.load()
     }
 
     def onChange = { event ->

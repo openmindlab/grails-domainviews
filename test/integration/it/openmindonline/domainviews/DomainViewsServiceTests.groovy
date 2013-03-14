@@ -11,7 +11,7 @@ import static org.junit.Assert.*
 import grails.test.mixin.support.*
 
 @TestFor(DomainViewsService)
-@Build([Model,Brand])
+@Build([ModelTest,BrandTest])
 class DomainViewsServiceTests {
 
   def domainViewsService
@@ -20,13 +20,13 @@ class DomainViewsServiceTests {
   @Test
   void 'simple direct property'(){
     setViews {
-      model{
+      modelTest{
         standard {
           name
         }
       }
     }
-    def map = domainViewsService.applyView('standard', Model.build(name:'Astra'))
+    def map = domainViewsService.applyView('standard', ModelTest.build(name:'Astra'))
     assert map
     assert map instanceof Map
     assert map.name
@@ -36,64 +36,64 @@ class DomainViewsServiceTests {
   @Test
   void "complex property"(){
     setViews {
-      model {
+      modelTest {
         standard {
           name
-          brand {
+          brandTest {
             name
           }
         }
       }
     }
-    def model = Model.build(name:'Astra', brand: Brand.build(name:'Opel'))
-    def map = domainViewsService.applyView('standard',model)
+    def modelTest = ModelTest.build(name:'Astra', brandTest: BrandTest.build(name:'Opel'))
+    def map = domainViewsService.applyView('standard',modelTest)
 
     assert map.containsKey('name')
     assert map.name == 'Astra'
-    assert map.containsKey('brand')
-    assert map.brand instanceof Map
-    assert map.brand.containsKey('name')
-    assert map.brand.name == "Opel"
+    assert map.containsKey('brandTest')
+    assert map.brandTest instanceof Map
+    assert map.brandTest.containsKey('name')
+    assert map.brandTest.name == "Opel"
   }
 
   @Test
   void "all properties from complex property marked with ALL"(){
     setViews {
-      model {
+      modelTest {
         standard {
           name
-          brand ALL
+          brandTest ALL
         }
       }
     }
-    def model = Model.build(name:'Astra', brand: Brand.build(name:'Opel'))
-    def map = domainViewsService.applyView('standard',model)
+    def modelTest = ModelTest.build(name:'Astra', brandTest: BrandTest.build(name:'Opel'))
+    def map = domainViewsService.applyView('standard',modelTest)
 
-    assert map.containsKey('brand')
-    assert map.brand instanceof Map
-    assert map.brand.size() == 2
-    assert map.brand.containsKey('id')
-    assert map.brand.containsKey('name')
-    assert map.brand.id   == model.brand.id
-    assert map.brand.name == "Opel"
+    assert map.containsKey('brandTest')
+    assert map.brandTest instanceof Map
+    assert map.brandTest.size() == 2
+    assert map.brandTest.containsKey('id')
+    assert map.brandTest.containsKey('name')
+    assert map.brandTest.id   == modelTest.brandTest.id
+    assert map.brandTest.name == "Opel"
   }
 
   @Test
   void "complex property, get only id"(){
     setViews {
-      model {
+      modelTest {
         standard {
           name
-          brand
+          brandTest
         }
       }
     }
-    def model = Model.build(name:'Astra', brand: Brand.build(name:'Opel'))
-    def map = domainViewsService.applyView('standard',model)
-    assert map.brand
-    assert map.brand.size()==1
-    assert map.brand.id
-    assert map.brand.id == model.brand.id
+    def modelTest = ModelTest.build(name:'Astra', brandTest: BrandTest.build(name:'Opel'))
+    def map = domainViewsService.applyView('standard',modelTest)
+    assert map.brandTest
+    assert map.brandTest.size()==1
+    assert map.brandTest.id
+    assert map.brandTest.id == modelTest.brandTest.id
   }
 
   @Test
@@ -107,84 +107,84 @@ class DomainViewsServiceTests {
         }
       }
     }
-    def model = Model.build(name:'Astra', brand: Brand.build(name:'Opel'))
-    def obj = domainViewsService.applyView('standard',model)
-    assert obj instanceof Model
-    assert obj == model
+    def modelTest = ModelTest.build(name:'Astra', brandTest: BrandTest.build(name:'Opel'))
+    def obj = domainViewsService.applyView('standard',modelTest)
+    assert obj instanceof ModelTest
+    assert obj == modelTest
   }
 
   @Test
   void "set normalized flag"(){
     setViews {
-      model {
+      modelTest {
         standard{
-          brand
+          brandTest
         }
       }
     }
-    domainViewsService.normalize(Model)
-    assert views.model.views.standard._normalized
+    domainViewsService.normalize(ModelTest)
+    assert views.modelTest.views.standard._normalized
   }
 
   @Test
   void "normalize complex property, get only id"(){
     setViews {
-      model {
+      modelTest {
         standard{
-          brand
+          brandTest
         }
       }
     }
 
-    domainViewsService.normalize(Model)
+    domainViewsService.normalize(ModelTest)
 
-    assert views.model
-    assert views.model.views.standard
-    assert views.model.views.standard.properties
-    assert views.model.views.standard.properties.size() == 1
-    assert views.model.views.standard.properties[0] instanceof View
-    def brand = views.model.views.standard.properties[0]
-    assert brand.properties
-    assert brand.properties.size()==1
-    assert brand.properties[0] == 'id'
+    assert views.modelTest
+    assert views.modelTest.views.standard
+    assert views.modelTest.views.standard.properties
+    assert views.modelTest.views.standard.properties.size() == 1
+    assert views.modelTest.views.standard.properties[0] instanceof View
+    def brandTest = views.modelTest.views.standard.properties[0]
+    assert brandTest.properties
+    assert brandTest.properties.size()==1
+    assert brandTest.properties[0] == 'id'
   }
 
   @Test
   void "normalize complex property, take all properties"(){
     setViews {
-      model {
+      modelTest {
         standard {
-          brand ALL
+          brandTest ALL
         }
       }
     }
 
-    domainViewsService.normalize(Model)
+    domainViewsService.normalize(ModelTest)
 
-    def brand = views.model.views.standard.properties[0]
-    assert brand
-    assert brand.properties
-    assert brand.properties.size()==2
-    assert brand.properties[0] == 'id'
-    assert brand.properties[1] == 'name'
+    def brandTest = views.modelTest.views.standard.properties[0]
+    assert brandTest
+    assert brandTest.properties
+    assert brandTest.properties.size()==2
+    assert brandTest.properties[0] == 'id'
+    assert brandTest.properties[1] == 'name'
   }
 
   @Test
   void 'idempotent normalization'(){
     setViews {
-      model {
+      modelTest {
         standard {
           name
-          brand {
+          brandTest {
             name
           }
         }
       }
     }
 
-    domainViewsService.normalize(Model)
+    domainViewsService.normalize(ModelTest)
 
-    def standardView = views.model.views.standard
+    def standardView = views.modelTest.views.standard
     assert standardView.properties
     assert standardView.properties.size()==2
     assert standardView.properties[0] == 'name'
@@ -197,46 +197,46 @@ class DomainViewsServiceTests {
   @Test
   void "normalize multiple nested levels terminating with ALL"(){
     setViews {
-      vehicle {
+      vehicleTest {
         standard {
-          model ALL
+          modelTest ALL
         }
       }
     }
-    domainViewsService.normalize(Vehicle)
-    def vehicleView = views.vehicle.views.standard
-    assert vehicleView
-    assert vehicleView.properties
-    assert vehicleView.properties.size() == 1
-    def modelView   = vehicleView.properties[0]
-    assert modelView
-    assert modelView.properties
-    assert modelView.properties.size() == 4
-    assert modelView.properties.contains('id')
-    assert modelView.properties.contains('name')
-    assert modelView.properties.contains('modelVersion')
-    def brandView   = modelView.properties.find{it instanceof View}
-    assert brandView
-    assert brandView._name =='brand'
-    assert brandView.properties
-    assert brandView.properties.size() == 1
-    assert brandView.properties[0] == 'id'
+    domainViewsService.normalize(VehicleTest)
+    def vehicleTestView = views.vehicleTest.views.standard
+    assert vehicleTestView
+    assert vehicleTestView.properties
+    assert vehicleTestView.properties.size() == 1
+    def modelTestView   = vehicleTestView.properties[0]
+    assert modelTestView
+    assert modelTestView.properties
+    assert modelTestView.properties.size() == 4
+    assert modelTestView.properties.contains('id')
+    assert modelTestView.properties.contains('name')
+    assert modelTestView.properties.contains('modelVersion')
+    def brandTestView   = modelTestView.properties.find{it instanceof View}
+    assert brandTestView
+    assert brandTestView._name =='brandTest'
+    assert brandTestView.properties
+    assert brandTestView.properties.size() == 1
+    assert brandTestView.properties[0] == 'id'
   }
 
   @Test
   void "normalize multiple nested levels terminating with complex property"(){
     setViews {
-      vehicle {
+      vehicleTest {
         standard {
-          contract {
+          contractTest {
             data
           }
         }
       }
     }
-    domainViewsService.normalize(Vehicle)
-    def vehicleView = views.vehicle.views.standard
-    def contractView = vehicleView.properties[0]
+    domainViewsService.normalize(VehicleTest)
+    def vehicleTestView = views.vehicleTest.views.standard
+    def contractView = vehicleTestView.properties[0]
     assert contractView
     assert contractView.properties
     assert contractView.properties.size()==1
@@ -250,32 +250,32 @@ class DomainViewsServiceTests {
   @Test
   void 'simple property with ALL should be interpreted as simple property'(){
     setViews {
-      model{
+      modelTest{
         standard{
           name ALL
         }
       }
     }
-    domainViewsService.normalize(Model)
-    def modelView = views.model.views.standard
+    domainViewsService.normalize(ModelTest)
+    def modelTestView = views.modelTest.views.standard
 
-    assert modelView
-    assert modelView.properties
-    assert modelView.properties.size() == 1
-    assert modelView.properties[0]=='name'
+    assert modelTestView
+    assert modelTestView.properties
+    assert modelTestView.properties.size() == 1
+    assert modelTestView.properties[0]=='name'
   }
 
   @Test
   void 'view passed by thread local'(){
     setViews {
-      model{
+      modelTest{
         standard{
           name
         }
       }
     }
     domainViewsService.setView 'standard'
-    def map = domainViewsService.applyView(Model.build(name:'Astra'))
+    def map = domainViewsService.applyView(ModelTest.build(name:'Astra'))
     assert map
     assert map instanceof Map
     assert map.name == 'Astra'
@@ -284,7 +284,7 @@ class DomainViewsServiceTests {
   @Test
   void 'view passed by thread local, 2 threads'(){
     setViews {
-      model {
+      modelTest {
         standard {
           name
         }
@@ -294,50 +294,50 @@ class DomainViewsServiceTests {
       }
     }
     domainViewsService.setView 'standard'
-    def model = Model.build(name: 'Astra')
+    def modelTest = ModelTest.build(name: 'Astra')
     Thread.start {
       domainViewsService.setView 'onlyId'
-      def modelOnlyId = domainViewsService.applyView model
-      assert modelOnlyId
-      assert modelOnlyId.size() == 1
-      assert modelOnlyId.id == model.id
+      def modelTestOnlyId = domainViewsService.applyView modelTest
+      assert modelTestOnlyId
+      assert modelTestOnlyId.size() == 1
+      assert modelTestOnlyId.id == modelTest.id
     }
-    def modelStandard = domainViewsService.applyView model
-    assert modelStandard
-    assert modelStandard.size() == 1
-    assert modelStandard.name == 'Astra'
+    def modelTestStandard = domainViewsService.applyView modelTest
+    assert modelTestStandard
+    assert modelTestStandard.size() == 1
+    assert modelTestStandard.name == 'Astra'
   }
 
   @Test
   void 'unmatching view defined in thread local'(){
     setViews {
-      model {
+      modelTest {
         unmatching {
           name
         }
       }
     }
     domainViewsService.setView 'standard'
-    def model = Model.build(name:'Astra')
-    def obj = domainViewsService.applyView(model)
+    def modelTest = ModelTest.build(name:'Astra')
+    def obj = domainViewsService.applyView(modelTest)
 
-    assert model == obj
+    assert modelTest == obj
   }
 
   @Test
   void 'null view defined in thread local'(){
     setViews {
-      model {
+      modelTest {
         unmatching {
           name
         }
       }
     }
     domainViewsService.setView null
-    def model = Model.build(name:'Astra')
-    def obj = domainViewsService.applyView(model)
+    def modelTest = ModelTest.build(name:'Astra')
+    def obj = domainViewsService.applyView(modelTest)
 
-    assert model == obj
+    assert modelTest == obj
   }
 
   private setViews(Closure cl){

@@ -1,16 +1,12 @@
 package it.openmindonline.domainviews.test.dataobjects
 
-class Model {
+class ModelTest {
     
-    Brand brand
+    BrandTest brandTest
     String name
     String modelVersion
 
     static constraints = {
       modelVersion nullable:true
-    }
-
-    String toString(){
-      "${name}"
     }
 }
