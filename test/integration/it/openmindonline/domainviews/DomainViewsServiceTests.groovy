@@ -11,7 +11,7 @@ import static org.junit.Assert.*
 import grails.test.mixin.support.*
 
 @TestFor(DomainViewsService)
-@Build([ModelTest,BrandTest])
+@Build([ModelTest,BrandTest, VehicleTest])
 class DomainViewsServiceTests {
 
   def domainViewsService
