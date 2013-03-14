@@ -7,19 +7,7 @@ class DomainViewsService {
 
     def transactional = false
 
-    private static final ThreadLocal viewThreadLocal = new ThreadLocal();
-
     def grailsApplication
-
-    def setView(String viewName){
-      viewThreadLocal.set(viewName)
-    }
-
-    def applyView(obj){
-      String viewName = viewThreadLocal.get()
-      viewThreadLocal.set(null)
-      applyView(viewName, obj)
-    }
 
     private view(viewDef, obj) {
       def map = [:]
