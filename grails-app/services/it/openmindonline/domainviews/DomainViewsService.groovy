@@ -24,6 +24,10 @@ class DomainViewsService {
       return map
     }
 
+    def applyView(obj){
+      applyView('standard',obj)
+    }
+
     def applyView(String viewName, obj){
       def viewDef = getViewsForDomainObject(obj.class)?."$viewName" 
       if(!viewDef) return obj
