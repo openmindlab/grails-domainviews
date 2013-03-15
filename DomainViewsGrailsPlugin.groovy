@@ -57,18 +57,18 @@ Brief summary/description of the plugin.
     }
 
     def doWithApplicationContext = { applicationContext ->
-        // TODO Implement post initialization spring config (optional)
-        // 
-        
 
-        application.config.domainViews = DomainViewsBuilder.load()
-        def domainViewsService = new DomainViewsService(grailsApplication: application)
+        def views = DomainViewsBuilder.load()
+        if (views){
+            application.config.domainViews = views
+            def domainViewsService = new DomainViewsService(grailsApplication: application)
 
-        println "******************************** Normalizing views ********************************"
-        application.config.domainViews.each{domainName,_ ->
-            def domainClass = application.getArtefactByLogicalPropertyName("Domain",domainName)
-            domainViewsService.normalize domainClass.clazz
-            println "- $domainName [${domainClass.clazz.name}] OK"
+            println "******************************** Normalizing views ********************************"
+            application.config.domainViews.each{domainName,_ ->
+                def domainClass = application.getArtefactByLogicalPropertyName("Domain",domainName)
+                domainViewsService.normalize domainClass.clazz
+                println "- $domainName [${domainClass.clazz.name}] OK"
+            }
         }
     }
 
