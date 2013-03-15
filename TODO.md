@@ -1,2 +1,3 @@
 - view throught request, thread local or something
 - autoreload config
+- ignore domain field as service, ... 
