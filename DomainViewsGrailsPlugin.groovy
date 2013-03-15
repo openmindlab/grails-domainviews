@@ -9,11 +9,11 @@ class DomainViewsGrailsPlugin {
     // resources that are excluded from plugin packaging
     def pluginExcludes = [
         "grails-app/views/error.gsp"
-        ,"grails-app/domain/it/openmindonline/domainviews/test/dataobjects/Brand.groovy"
-        ,"grails-app/domain/it/openmindonline/domainviews/test/dataobjects/Model.groovy"
-        ,"grails-app/domain/it/openmindonline/domainviews/test/dataobjects/Contract.groovy"
-        ,"grails-app/domain/it/openmindonline/domainviews/test/dataobjects/Vehicle.groovy"
-        ,"grails-app/domain/it/openmindonline/domainviews/test/dataobjects/ContractVersion.groovy"
+        ,"grails-app/domain/it/openmindonline/domainviews/test/dataobjects/BrandTest.groovy"
+        ,"grails-app/domain/it/openmindonline/domainviews/test/dataobjects/ModelTest.groovy"
+        ,"grails-app/domain/it/openmindonline/domainviews/test/dataobjects/ContractTest.groovy"
+        ,"grails-app/domain/it/openmindonline/domainviews/test/dataobjects/VehicleTest.groovy"
+        ,"grails-app/domain/it/openmindonline/domainviews/test/dataobjects/ContractVersionTest.groovy"
     ]
 
     // TODO Fill in these fields
