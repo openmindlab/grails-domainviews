@@ -1,0 +1,2 @@
+- view throught request, thread local or something
+- autoreload config
