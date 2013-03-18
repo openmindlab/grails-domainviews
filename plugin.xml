@@ -1,5 +1,6 @@
-<plugin name='domain-views' version='0.2' grailsVersion='2.2 &gt; *'>
-  <author>Your name</author>
+<plugin name='domain-views' version='0.2.1' grailsVersion='2.2 &gt; *'>
+  <author>Carlo Colombo</author>
+  <authorEmail>carlo.colombo@openmindonline.it</authorEmail>
   <title>Domain Views Plugin</title>
   <description>Brief summary/description of the plugin.
 </description>
@@ -10,6 +11,11 @@
   </resources>
   <repositories>
     <repository name='grailsCentral' url='http://grails.org/plugins' />
+    <repository name='mavenCentral' url='http://repo1.maven.org/maven2/' />
+    <repository name='http://snapshots.repository.codehaus.org' url='http://snapshots.repository.codehaus.org/' />
+    <repository name='http://repository.codehaus.org' url='http://repository.codehaus.org/' />
+    <repository name='http://download.java.net/maven/2/' url='http://download.java.net/maven/2/' />
+    <repository name='http://repository.jboss.com/maven2/' url='http://repository.jboss.com/maven2/' />
   </repositories>
   <dependencies />
   <plugins>
