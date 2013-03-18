@@ -24,6 +24,10 @@ class DomainViewsService {
       return map
     }
 
+    def filterProperties = {
+      it.name!='version' && !(it.name =~ /.*Service/)
+    }
+
     def applyView(obj){
       applyView('standard',obj)
     }
@@ -57,7 +61,7 @@ class DomainViewsService {
     private normalizeView(domainClass, View view){
       def properties = view._toExtend ? 
         domainClass.properties
-          .findAll{it.name!='version'}*.name.collect{ domainProperty ->
+          .findAll(filterProperties)*.name.collect{ domainProperty ->
             view.properties.find{
               viewProperty -> viewProperty._name == domainProperty
             } ?: domainProperty
@@ -72,7 +76,7 @@ class DomainViewsService {
 
     private normalizeView(domainClass, ViewAll view){
       def newView = new View(_name:view._name)
-      newView.properties = domainClass.properties.findAll{it.name!='version'}*.name
+      newView.properties = domainClass.properties.findAll(filterProperties)*.name
       normalizeView domainClass, newView
     }
 
@@ -89,7 +93,7 @@ class DomainViewsService {
         def prop = domainClass.getPropertyByName(view._name)
         if (prop.association){
           def newView = new View(_name: view._name)
-          newView.properties = prop.referencedDomainClass.properties.findAll{it.name!='version'}*.name
+          newView.properties = prop.referencedDomainClass.properties.findAll(filterProperties)*.name
           normalizeView(prop.referencedDomainClass, newView)
         }else{
           view._name

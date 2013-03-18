@@ -317,6 +317,44 @@ class DomainViewsServiceTests {
   }
 
   @Test
+  void 'normalize ALL ignoring services'(){
+    setViews{
+      domainWithService{
+        standard ALL
+      }
+    }
+
+    domainViewsService.normalize(DomainWithService)
+    def standardView = views.domainWithService.views.standard
+    assert standardView
+    assert standardView.properties
+    assert standardView.properties.size()==2
+    assert standardView.properties.find{it=='id'}
+    assert standardView.properties.find{it=='name'}
+    assert !standardView.properties.find{it=='testService'}
+  }
+
+  @Test
+  void "normalize EXTENDS ignoring services"(){
+    setViews {
+      domainWithService {
+        standard {
+          EXTENDS
+        }
+      }
+    }
+
+    domainViewsService.normalize(DomainWithService)
+    def standardView = views.domainWithService.views.standard
+    assert standardView
+    assert standardView.properties
+    assert standardView.properties.size()==2
+    assert standardView.properties.find{it=='id'}
+    assert standardView.properties.find{it=='name'}
+    assert !standardView.properties.find{it=='testService'}
+  }
+
+  @Test
   void "apply view handle direct null property"(){
     setViews {
       vehicleTest {

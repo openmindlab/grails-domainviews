@@ -9,11 +9,8 @@ class DomainViewsGrailsPlugin {
     // resources that are excluded from plugin packaging
     def pluginExcludes = [
         "grails-app/views/error.gsp"
-        ,"grails-app/domain/it/openmindonline/domainviews/test/dataobjects/BrandTest.groovy"
-        ,"grails-app/domain/it/openmindonline/domainviews/test/dataobjects/ModelTest.groovy"
-        ,"grails-app/domain/it/openmindonline/domainviews/test/dataobjects/ContractTest.groovy"
-        ,"grails-app/domain/it/openmindonline/domainviews/test/dataobjects/VehicleTest.groovy"
-        ,"grails-app/domain/it/openmindonline/domainviews/test/dataobjects/ContractVersionTest.groovy"
+        ,"grails-app/domain/it/openmindonline/domainviews/test/dataobjects/*.groovy"
+        ,"grails-app/services/it/openmindonline/domainviews/test/dataobjects/*groovy"
     ]
 
     // TODO Fill in these fields
@@ -78,6 +75,8 @@ Brief summary/description of the plugin.
         // TODO Implement code that is executed when any artefact that this plugin is
         // watching is modified and reloaded. The event contains: event.source,
         // event.application, event.manager, event.ctx, and event.plugin.
+        // 
+        println event.source
     }
 
     def onConfigChange = { event ->
