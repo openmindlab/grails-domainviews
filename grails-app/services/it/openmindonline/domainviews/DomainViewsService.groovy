@@ -34,6 +34,12 @@ class DomainViewsService {
       view(viewDef,obj)
     }
 
+    def applyView(String viewName, Collection collection){
+      collection.collect{
+        applyView(viewName, it)
+      }
+    }
+
     def getViewsForDomainObject(clazz){
       def name = GrailsNameUtils.getPropertyNameRepresentation(clazz)
       grailsApplication.config.domainViews?."$name"?.views ?: [:]

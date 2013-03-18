@@ -346,6 +346,61 @@ class DomainViewsServiceTests {
     def obj = domainViewsService.applyView('standard', vehicleTest)
   }
 
+  @Test
+  void 'create reuseble views as closure'(){
+    setViews {
+      modelTest {
+        def reuseblaView = {
+          name
+          id
+        }
+
+        standard {
+          brandTest reuseblaView
+        }
+
+        standard2 {
+          name
+          brandTest reuseblaView
+        }
+      }
+    }
+
+    def map  = domainViewsService.applyView('standard',  ModelTest.build(name:'Astra', brandTest: BrandTest.build(name:'Opel')))
+    def map2 = domainViewsService.applyView('standard2', ModelTest.build(name:'Astra', brandTest: BrandTest.build(name:'Opel')))
+    
+    assert map.brandTest
+    assert map.brandTest.name
+    assert map.brandTest.id
+
+    assert map2.name
+    assert map2.brandTest
+    assert map2.brandTest.name
+    assert map2.brandTest.id
+  }
+
+  @Test
+  void 'handle collections'(){
+    setViews {
+      modelTest{
+        standard {
+          name
+        }
+      }
+    }
+
+    def collection = [ModelTest.build(name:'Zafira'),ModelTest.build(name:'Astra')]
+
+    def coll = domainViewsService.applyView('standard', collection)
+
+    assert coll instanceof Collection
+    assert coll.size()==2
+    assert coll[0] instanceof Map
+    assert coll[1] instanceof Map
+    assert coll[0].name == 'Zafira'
+    assert coll[1].name == 'Astra'
+  }
+
   private setViews(Closure cl){
     domainViewsService.grailsApplication.config.domainViews = DomainViewsBuilder.views(cl)
   }
