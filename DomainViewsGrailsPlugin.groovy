@@ -3,7 +3,7 @@ import it.openmindonline.domainviews.DomainViewsService
 
 class DomainViewsGrailsPlugin {
     // the plugin version
-    def version = "0.2"
+    def version = "0.2.1"
     // the version or versions of Grails the plugin is designed for
     def grailsVersion = "2.2 > *"
     // resources that are excluded from plugin packaging
@@ -18,8 +18,8 @@ class DomainViewsGrailsPlugin {
 
     // TODO Fill in these fields
     def title = "Domain Views Plugin" // Headline display name of the plugin
-    def author = "Your name"
-    def authorEmail = ""
+    def author = "Carlo Colombo"
+    def authorEmail = "carlo.colombo@openmindonline.it"
     def description = '''\
 Brief summary/description of the plugin.
 '''
@@ -33,16 +33,18 @@ Brief summary/description of the plugin.
 //    def license = "APACHE"
 
     // Details of company behind the plugin (if there is one)
-//    def organization = [ name: "My Company", url: "http://www.my-company.com/" ]
+    def organization = [ name: "Openmind", url: "http://www.openmindlab.com/" ]
 
     // Any additional developers beyond the author specified above.
-//    def developers = [ [ name: "Joe Bloggs", email: "joe@bloggs.net" ]]
+    def developers = [
+        [ name: "Manuel Molaschi", email: "manuel.molaschi@openmindonline.it" ]
+    ]
 
     // Location of the plugin's issue tracker.
-//    def issueManagement = [ system: "JIRA", url: "http://jira.grails.org/browse/GPMYPLUGIN" ]
+    def issueManagement = [ system: "GITHUB", url: "https://github.com/openmindlab/grails-domainviews/issues" ]
 
     // Online location of the plugin's browseable source code.
-//    def scm = [ url: "http://svn.codehaus.org/grails-plugins/" ]
+    def scm = [ url: "https://github.com/openmindlab/grails-domainviews" ]
 
     def doWithWebDescriptor = { xml ->
         // TODO Implement additions to web.xml (optional), this event occurs before
