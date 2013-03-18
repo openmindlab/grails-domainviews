@@ -92,6 +92,23 @@ class DomainViewsServiceTests {
     assert objectViews.test.properties.size()==2
   }
 
+  @Test
+  void 'return empty definition for inline groovy objects (maps, collections)'(){
+    setViews{
+      testClass {
+        standard {
+          name
+        }
+      }
+    }
+
+    def map = [:]
+    def objectViews = domainViewsService.getViewsForDomainObject(map.class)
+
+    assert objectViews instanceof Map
+    assert objectViews.size() == 0
+  }
+
   void setUp() {
     domainViewsService = new DomainViewsService()
     domainViewsService.grailsApplication = [config:[:]]

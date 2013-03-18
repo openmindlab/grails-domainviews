@@ -41,8 +41,8 @@ class DomainViewsService {
     }
 
     def getViewsForDomainObject(clazz){
-      def name = GrailsNameUtils.getPropertyNameRepresentation(clazz)
-      grailsApplication.config.domainViews?."$name"?.views ?: [:]
+      def name = !clazz ? false : GrailsNameUtils.getPropertyNameRepresentation(clazz)
+      name ? grailsApplication.config.domainViews?."$name"?.views ?: [:] : [:]
       
     }
 
