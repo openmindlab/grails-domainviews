@@ -11,7 +11,7 @@ import static org.junit.Assert.*
 import grails.test.mixin.support.*
 
 @TestFor(DomainViewsService)
-@Build([ModelTest,BrandTest, VehicleTest])
+@Build([ModelTest,BrandTest, VehicleTest, DomainWithEnumeration])
 class DomainViewsServiceTests {
 
   def domainViewsService
@@ -437,6 +437,50 @@ class DomainViewsServiceTests {
     assert coll[1] instanceof Map
     assert coll[0].name == 'Zafira'
     assert coll[1].name == 'Astra'
+  }
+
+  @Test
+  void 'enumeration rendered as ${enumType}.{enumName}'(){
+    setViews {
+      domainWithEnumeration {
+        standard {
+          property
+        }
+      }
+    }
+
+    def map = domainViewsService.applyView('standard', DomainWithEnumeration.build(property:'SAMPLE_ENUM_1') )
+    assert map.property == 'EnumerationSamples.SAMPLE_ENUM_1'
+  }
+
+  @Test
+  void 'normalizing view of domain with embedded properties list all embedded properties, ALL properties from a domain'(){
+    setViews{
+      domainWithEmbeddedProperties {
+        standard ALL
+      }
+    }
+
+    domainViewsService.normalize(DomainWithEmbeddedProperties)
+    def standardView = views.domainWithEmbeddedProperties.views.standard
+    def embeddeView = standardView.properties.find{ it instanceof View }
+    assert embeddeView.properties.contains('embddProperty')
+  }
+
+  @Test
+  void 'normalizing view of domain with embedded properties list all embedded properties, EXTENDS properties of a domain'(){
+    setViews{
+      domainWithEmbeddedProperties {
+        standard {
+          EXTENDS
+        }
+      }
+    }
+
+    domainViewsService.normalize(DomainWithEmbeddedProperties)
+    def standardView = views.domainWithEmbeddedProperties.views.standard
+    def embeddeView = standardView.properties.find{ it instanceof View }
+    assert embeddeView.properties.contains('embddProperty')
   }
 
   private setViews(Closure cl){
