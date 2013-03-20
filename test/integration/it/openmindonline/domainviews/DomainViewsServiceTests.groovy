@@ -11,7 +11,7 @@ import static org.junit.Assert.*
 import grails.test.mixin.support.*
 
 @TestFor(DomainViewsService)
-@Build([ModelTest,BrandTest, VehicleTest, DomainWithEnumeration])
+@Build([ModelTest,BrandTest, VehicleTest])
 class DomainViewsServiceTests {
 
   def domainViewsService
@@ -437,20 +437,6 @@ class DomainViewsServiceTests {
     assert coll[1] instanceof Map
     assert coll[0].name == 'Zafira'
     assert coll[1].name == 'Astra'
-  }
-
-  @Test
-  void 'enumeration rendered as ${enumType}.{enumName}'(){
-    setViews {
-      domainWithEnumeration {
-        standard {
-          property
-        }
-      }
-    }
-
-    def map = domainViewsService.applyView('standard', DomainWithEnumeration.build(property:'SAMPLE_ENUM_1') )
-    assert map.property == 'EnumerationSamples.SAMPLE_ENUM_1'
   }
 
   @Test

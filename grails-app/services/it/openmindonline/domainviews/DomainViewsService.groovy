@@ -83,7 +83,9 @@ class DomainViewsService {
     private normalizeProperty(domainClass, String propertyName){
       def prop = domainClass.getPropertyByName(propertyName)
       if (prop.association){
-        new View(_name:propertyName, properties: ['id'])
+        new View(
+            _name     : propertyName
+          , properties: prop.embedded ? prop.component.properties*.name : ['id'])
       }else{
         propertyName
       }
