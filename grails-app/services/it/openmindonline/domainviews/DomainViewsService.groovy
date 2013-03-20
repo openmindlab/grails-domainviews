@@ -14,7 +14,8 @@ class DomainViewsService {
       viewDef.properties.each{
         switch(it.class) {
           case String:
-            map[it] = obj?."$it"
+            def value = obj?."$it"
+            map[it] = value instanceof Enum ? value.name() : value
           break
           case View:
             map[it._name] = view(it,obj?."${it._name}");

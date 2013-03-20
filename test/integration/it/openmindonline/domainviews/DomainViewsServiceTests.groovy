@@ -11,7 +11,7 @@ import static org.junit.Assert.*
 import grails.test.mixin.support.*
 
 @TestFor(DomainViewsService)
-@Build([ModelTest,BrandTest, VehicleTest])
+@Build([ModelTest,BrandTest, VehicleTest,DomainWithEnumeration])
 class DomainViewsServiceTests {
 
   def domainViewsService
@@ -467,6 +467,22 @@ class DomainViewsServiceTests {
     def standardView = views.domainWithEmbeddedProperties.views.standard
     def embeddeView = standardView.properties.find{ it instanceof View }
     assert embeddeView.properties.contains('embddProperty')
+  }
+
+  @Test
+  void 'enumeration should be rendered as String vith value enumeration name'(){
+    setViews{
+      domainWithEnumeration {
+        standard {
+          property
+        }
+      }
+    }
+
+    def map = domainViewsService.applyView('standard', DomainWithEnumeration.build())
+
+    assert map.property instanceof String
+    assert map.property == 'ONE'
   }
 
   private setViews(Closure cl){
