@@ -86,7 +86,8 @@ class DomainViewsService {
       if (prop.association){
         new View(
             _name     : propertyName
-          , properties: prop.embedded ? prop.component.properties*.name : ['id'])
+          , properties: !prop.embedded ? ['id'] :
+              prop.component.properties.findAll(filterProperties).findAll({it.name!='id'})*.name  )
       }else{
         propertyName
       }

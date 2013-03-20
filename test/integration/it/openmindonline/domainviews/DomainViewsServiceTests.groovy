@@ -450,6 +450,7 @@ class DomainViewsServiceTests {
     domainViewsService.normalize(DomainWithEmbeddedProperties)
     def standardView = views.domainWithEmbeddedProperties.views.standard
     def embeddeView = standardView.properties.find{ it instanceof View }
+    assert embeddeView.properties.size()==1
     assert embeddeView.properties.contains('embddProperty')
   }
 
@@ -466,6 +467,7 @@ class DomainViewsServiceTests {
     domainViewsService.normalize(DomainWithEmbeddedProperties)
     def standardView = views.domainWithEmbeddedProperties.views.standard
     def embeddeView = standardView.properties.find{ it instanceof View }
+    assert embeddeView.properties.size()==1
     assert embeddeView.properties.contains('embddProperty')
   }
 
