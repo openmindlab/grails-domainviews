@@ -34,6 +34,8 @@ grails.project.dependency.resolution = {
             export = false
         }
 
+        build ":release:2.2.1"
+
         test ":build-test-data:2.0.4"
         test ":hibernate:$grailsVersion"
     }
