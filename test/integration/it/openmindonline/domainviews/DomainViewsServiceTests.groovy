@@ -11,7 +11,7 @@ import static org.junit.Assert.*
 import grails.test.mixin.support.*
 
 @TestFor(DomainViewsService)
-@Build([ModelTest,BrandTest, VehicleTest,DomainWithEnumeration])
+@Build([ModelTest,BrandTest, VehicleTest,DomainWithEnumeration, DomainWithEmbeddedProperties])
 class DomainViewsServiceTests {
 
   def domainViewsService
@@ -485,6 +485,39 @@ class DomainViewsServiceTests {
 
     assert map.property instanceof String
     assert map.property == 'ONE'
+  }
+
+  @Test
+  void 'return null for null property'(){
+    setViews{
+      vehicleTest{
+        standard{
+          contractTest ALL
+        }
+      }
+    }
+
+    domainViewsService.normalize(VehicleTest)
+
+    def map = domainViewsService.applyView('standard', VehicleTest.build(contractTest:null))
+
+    assert map.contractTest == null
+  }
+
+  @Test
+  void 'return null for null embedded property'(){
+    setViews{
+      domainWithEmbeddedProperties {
+        standard {
+          EXTENDS
+        }
+      }
+    }
+    domainViewsService.normalize(DomainWithEmbeddedProperties)
+
+    def map = domainViewsService.applyView('standard', DomainWithEmbeddedProperties.build(property:null))
+
+    assert map.property == null
   }
 
   private setViews(Closure cl){
