@@ -1,4 +1,3 @@
-- view throught request, thread local or something
 - autoreload config
-- ignore domain field as service, ... 
-- handle domains collection (query results) ?
+- blacklist properties from domain for ALL and EXTENDS
+- config to create default view for every domain
