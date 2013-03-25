@@ -28,7 +28,7 @@ class DomainViewsService {
     }
 
     def filterProperties = {
-      it.name!='version' && !(it.name =~ /.*Service/)
+      it.name!='version' && !(it.name =~ /.*Service/) &&  it.name!='grailsApplication'
     }
 
     def applyView(obj){
