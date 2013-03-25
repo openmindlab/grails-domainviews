@@ -1,3 +1,2 @@
-- autoreload config
+- config to add filter for properties as services, grailsApplication
 - blacklist properties from domain for ALL and EXTENDS
-- config to create default view for every domain
