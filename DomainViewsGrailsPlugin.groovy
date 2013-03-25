@@ -1,9 +1,9 @@
-import it.openmindonline.domainviews.builder.DomainViewsBuilder
+import it.openmindonline.domainviews.builder.*
 import it.openmindonline.domainviews.DomainViewsService
 
 class DomainViewsGrailsPlugin {
     // the plugin version
-    def version = "0.3.2-1"
+    def version = "0.3.3"
     // the version or versions of Grails the plugin is designed for
     def grailsVersion = "2.2 > *"
     // resources that are excluded from plugin packaging
@@ -57,15 +57,31 @@ Brief summary/description of the plugin.
 
     def loadAndNormalize(application){
         def views = DomainViewsBuilder.load()
+        if (application.config.domainViewsConfig.defaultView){
+            application.getArtefacts("Domain")
+                .findAll{
+                    application.config.domainViewsConfig.defaultView.packages.any{ packageName ->
+                        it.clazz.package.toString().contains(packageName)
+                    }
+                }.each{
+                    if(!views.containsKey(it.logicalPropertyName)){
+                        views[it.logicalPropertyName] = [
+                            views:[
+                                standard : new ViewAll()
+                            ]
+                        ]
+                    }
+                }
+        }
+
         if (views){
             application.config.domainViews = views
             def domainViewsService = new DomainViewsService(grailsApplication: application)
-
             println "******************************** Normalizing views ********************************"
             application.config.domainViews.each{domainName,_ ->
                 def domainClass = application.getArtefactByLogicalPropertyName("Domain",domainName)
-                domainViewsService.normalize domainClass.clazz
-                println "- $domainName [${domainClass.clazz.name}]"
+                domainViewsService.normalize domainClass?.clazz
+                println "- $domainName [${domainClass?.clazz?.name}]"
                 application.config.domainViews[domainName]?.views?.each{viewName,_2 ->
                     println "\t $viewName"
                 }
@@ -90,7 +106,7 @@ Brief summary/description of the plugin.
     def onConfigChange = { event ->
         // TODO Implement code that is executed when the project configuration changes.
         // The event is the same as for 'onChange'.
-        println "onConfigChange ${event.source}"
+        // println "onConfigChange ${event.source}"
         
     }
 
