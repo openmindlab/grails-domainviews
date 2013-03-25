@@ -317,7 +317,7 @@ class DomainViewsServiceTests {
   }
 
   @Test
-  void 'normalize ALL ignoring services'(){
+  void 'normalize ALL ignoring services, grailsApplication'(){
     setViews{
       domainWithService{
         standard ALL
@@ -335,7 +335,7 @@ class DomainViewsServiceTests {
   }
 
   @Test
-  void "normalize EXTENDS ignoring services"(){
+  void "normalize EXTENDS ignoring services, grailsApplication"(){
     setViews {
       domainWithService {
         standard {
@@ -518,6 +518,21 @@ class DomainViewsServiceTests {
     def map = domainViewsService.applyView('standard', DomainWithEmbeddedProperties.build(property:null))
 
     assert map.property == null
+  }
+
+  @Test
+  void 'ALL extract calculated property too'(){
+    setViews{
+      domainWithCalculatedProperty{
+        standard ALL
+      }
+    }
+
+    domainViewsService.normalize(DomainWithCalculatedProperty)
+    def view = views.domainWithCalculatedProperty.views.standard
+
+    assert view.properties.contains('value') // <- calculated property
+    assert view.properties.contains('id')
   }
 
   private setViews(Closure cl){
