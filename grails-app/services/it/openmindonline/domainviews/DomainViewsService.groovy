@@ -10,7 +10,7 @@ class DomainViewsService {
     def grailsApplication
 
     private view(viewDef, obj) {
-      if(obj){ 
+      if(obj != null){ 
         def map = [:]
         viewDef.properties.each{
           switch(it.class) {
