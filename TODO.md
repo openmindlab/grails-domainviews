@@ -1,4 +1,2 @@
-- view throught request, thread local or something
-- autoreload config
-- ignore domain field as service, ... 
-- handle domains collection (query results) ?
+- config to add filter for properties as services, grailsApplication
+- blacklist properties from domain for ALL and EXTENDS

@@ -10,23 +10,25 @@ class DomainViewsService {
     def grailsApplication
 
     private view(viewDef, obj) {
-      def map = [:]
-      viewDef.properties.each{
-        switch(it.class) {
-          case String:
-            def value = obj?."$it"
-            map[it] = value instanceof Enum ? value.name() : value
-          break
-          case View:
-            map[it._name] = view(it,obj?."${it._name}");
-          break
+      if(obj){ 
+        def map = [:]
+        viewDef.properties.each{
+          switch(it.class) {
+            case String:
+              def value = obj?."$it"
+              map[it] = value instanceof Enum ? value.name() : value
+            break
+            case View:
+              map[it._name] = view(it,obj?."${it._name}");
+            break
+          }
         }
+        return map
       }
-      return map
     }
 
     def filterProperties = {
-      it.name!='version' && !(it.name =~ /.*Service/)
+      it.name!='version' && !(it.name =~ /.*Service/) &&  it.name!='grailsApplication'
     }
 
     def applyView(obj){

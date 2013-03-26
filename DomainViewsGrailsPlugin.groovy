@@ -1,9 +1,9 @@
-import it.openmindonline.domainviews.builder.DomainViewsBuilder
+import it.openmindonline.domainviews.builder.*
 import it.openmindonline.domainviews.DomainViewsService
 
 class DomainViewsGrailsPlugin {
     // the plugin version
-    def version = "0.3.1"
+    def version = "0.3.4"
     // the version or versions of Grails the plugin is designed for
     def grailsVersion = "2.2 > *"
     // resources that are excluded from plugin packaging
@@ -55,33 +55,59 @@ Brief summary/description of the plugin.
         // TODO Implement registering dynamic methods to classes (optional)
     }
 
-    def doWithApplicationContext = { applicationContext ->
-
+    def loadAndNormalize(application){
         def views = DomainViewsBuilder.load()
+        if (application.config.domainViewsConfig.defaultView){
+            application.getArtefacts("Domain")
+                .findAll{
+                    application.config.domainViewsConfig.defaultView.packages.any{ packageName ->
+                        it.clazz.package.toString().contains(packageName)
+                    }
+                }.each{
+                    if(!views.containsKey(it.logicalPropertyName)){
+                        views[it.logicalPropertyName] = [
+                            views:[
+                                standard : new ViewAll()
+                            ]
+                        ]
+                    }
+                }
+        }
+
         if (views){
             application.config.domainViews = views
             def domainViewsService = new DomainViewsService(grailsApplication: application)
-
             println "******************************** Normalizing views ********************************"
             application.config.domainViews.each{domainName,_ ->
                 def domainClass = application.getArtefactByLogicalPropertyName("Domain",domainName)
-                domainViewsService.normalize domainClass.clazz
-                println "- $domainName [${domainClass.clazz.name}] OK"
+                domainViewsService.normalize domainClass?.clazz
+                println "- $domainName [${domainClass?.clazz?.name}]"
+                application.config.domainViews[domainName]?.views?.each{viewName,_2 ->
+                    println "\t $viewName"
+                }
             }
         }
     }
+
+    def doWithApplicationContext = { applicationContext ->
+        loadAndNormalize(application)
+    }
+
+    def watchedResources = "file:./grails-app/conf/*Views.groovy"
 
     def onChange = { event ->
         // TODO Implement code that is executed when any artefact that this plugin is
         // watching is modified and reloaded. The event contains: event.source,
         // event.application, event.manager, event.ctx, and event.plugin.
         // 
-        println event.source
+        loadAndNormalize(event.application)
     }
 
     def onConfigChange = { event ->
         // TODO Implement code that is executed when the project configuration changes.
         // The event is the same as for 'onChange'.
+        // println "onConfigChange ${event.source}"
+        
     }
 
     def onShutdown = { event ->

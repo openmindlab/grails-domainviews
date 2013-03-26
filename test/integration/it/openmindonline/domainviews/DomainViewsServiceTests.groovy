@@ -11,7 +11,7 @@ import static org.junit.Assert.*
 import grails.test.mixin.support.*
 
 @TestFor(DomainViewsService)
-@Build([ModelTest,BrandTest, VehicleTest,DomainWithEnumeration])
+@Build([ModelTest,BrandTest, VehicleTest,DomainWithEnumeration, DomainWithEmbeddedProperties])
 class DomainViewsServiceTests {
 
   def domainViewsService
@@ -317,7 +317,7 @@ class DomainViewsServiceTests {
   }
 
   @Test
-  void 'normalize ALL ignoring services'(){
+  void 'normalize ALL ignoring services, grailsApplication'(){
     setViews{
       domainWithService{
         standard ALL
@@ -335,7 +335,7 @@ class DomainViewsServiceTests {
   }
 
   @Test
-  void "normalize EXTENDS ignoring services"(){
+  void "normalize EXTENDS ignoring services, grailsApplication"(){
     setViews {
       domainWithService {
         standard {
@@ -485,6 +485,54 @@ class DomainViewsServiceTests {
 
     assert map.property instanceof String
     assert map.property == 'ONE'
+  }
+
+  @Test
+  void 'return null for null property'(){
+    setViews{
+      vehicleTest{
+        standard{
+          contractTest ALL
+        }
+      }
+    }
+
+    domainViewsService.normalize(VehicleTest)
+
+    def map = domainViewsService.applyView('standard', VehicleTest.build(contractTest:null))
+
+    assert map.contractTest == null
+  }
+
+  @Test
+  void 'return null for null embedded property'(){
+    setViews{
+      domainWithEmbeddedProperties {
+        standard {
+          EXTENDS
+        }
+      }
+    }
+    domainViewsService.normalize(DomainWithEmbeddedProperties)
+
+    def map = domainViewsService.applyView('standard', DomainWithEmbeddedProperties.build(property:null))
+
+    assert map.property == null
+  }
+
+  @Test
+  void 'ALL extract calculated property too'(){
+    setViews{
+      domainWithCalculatedProperty{
+        standard ALL
+      }
+    }
+
+    domainViewsService.normalize(DomainWithCalculatedProperty)
+    def view = views.domainWithCalculatedProperty.views.standard
+
+    assert view.properties.contains('value') // <- calculated property
+    assert view.properties.contains('id')
   }
 
   private setViews(Closure cl){
