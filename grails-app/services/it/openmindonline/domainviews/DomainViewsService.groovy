@@ -36,7 +36,7 @@ class DomainViewsService {
     }
 
     def applyView(String viewName, obj){
-      if (obj) {
+      if (obj != null) {
         def viewDef = getViewsForDomainObject(obj.class)?."$viewName" 
         if(!viewDef) return obj
         view(viewDef,obj)
