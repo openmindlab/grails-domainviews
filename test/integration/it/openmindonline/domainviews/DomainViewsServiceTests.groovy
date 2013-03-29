@@ -12,10 +12,7 @@ import grails.test.mixin.support.*
 
 @TestFor(DomainViewsService)
 @Build([ModelTest,BrandTest, VehicleTest,DomainWithEnumeration, DomainWithEmbeddedProperties])
-class DomainViewsServiceTests {
-
-  def domainViewsService
-  def grailsApplication
+class DomainViewsServiceTests extends BaseDomainViewsServiceTests{
 
   @Test
   void 'simple direct property'(){
@@ -533,13 +530,5 @@ class DomainViewsServiceTests {
 
     assert view.properties.contains('value') // <- calculated property
     assert view.properties.contains('id')
-  }
-
-  private setViews(Closure cl){
-    domainViewsService.grailsApplication.config.domainViews = DomainViewsBuilder.views(cl)
-  }
-
-  private getViews(){
-    domainViewsService.grailsApplication.config.domainViews
   }
 }
