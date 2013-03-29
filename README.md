@@ -5,11 +5,12 @@ Grails plugin that allows to define views via a custom DSL to convert Grails Dom
  
 * Plugin will load views from files ending with Views placed in the grails-app/conf directory
 * domainViewsService injectable service
-* ignore
+* properties ignored when a view is applied
     * services (matching `/.*Service/` )
     * injected `grailsApplication`
     * `version`
-* handle
+* handle properties of a domain
+    * collection of domains 
     * simple property    
     * embedded domain objects
     * associations
