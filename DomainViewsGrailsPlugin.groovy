@@ -11,6 +11,7 @@ class DomainViewsGrailsPlugin {
         "grails-app/views/error.gsp"
         ,"grails-app/domain/it/openmindonline/domainviews/test/dataobjects/*.groovy"
         ,"grails-app/services/it/openmindonline/domainviews/test/dataobjects/*groovy"
+        ,"grails-app/conf/*"
     ]
 
     // TODO Fill in these fields

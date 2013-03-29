@@ -1,0 +1,7 @@
+views{
+  brandTest{
+    standard{
+      name
+    }
+  }
+}

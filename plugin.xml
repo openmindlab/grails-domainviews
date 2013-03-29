@@ -21,8 +21,8 @@
   <dependencies />
   <plugins>
     <test>
-      <plugin group='org.grails.plugins' name='build-test-data' version='2.0.4' />
       <plugin group='org.grails.plugins' name='hibernate' version='2.2.1' />
+      <plugin group='org.grails.plugins' name='build-test-data' version='2.0.4' />
     </test>
     <build>
       <plugin group='org.grails.plugins' name='release' version='2.2.1' />

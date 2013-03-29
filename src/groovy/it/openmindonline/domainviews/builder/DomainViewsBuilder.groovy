@@ -29,15 +29,28 @@ class DomainViewsBuilder{
 
   def static load(){
     GroovyClassLoader classLoader = new GroovyClassLoader(DomainViewsBuilder.classLoader)
-    Class domainsViews
-    try {
-      domainsViews = classLoader.loadClass('DomainViews')
-      log.info "DomainsViews.groovy found"
-      domainsViews.metaClass.views = DomainViewsBuilder.&views
-      domainsViews.newInstance().run()
-    } catch (ClassNotFoundException ex) {
-      log.warn "DomainsViews.groovy not found"
+    def views = []
+    def viewMap = [:]
+    //load all file from config ending in Views
+    new File('grails-app/conf').eachFileMatch( ~/.*Views\.groovy/ ){f -> 
+      try {
+        Class  domainsViews = classLoader.parseClass(f)
+        log.info "${f.name} found"
+        domainsViews.metaClass.views = DomainViewsBuilder.&views
+        views << domainsViews.newInstance().run()
+      } catch (Exception ex) {
+        log.error "Error loading ${f.name}. $ex"
+      }
     }
-
+    views.each{
+      it.each{ domainName, domain ->
+        if(!viewMap.containsKey(domainName)){
+          viewMap[domainName] = domain
+        }else {
+          viewMap[domainName].views << domain.views
+        }
+      }
+    }
+    return viewMap
   }
 }
