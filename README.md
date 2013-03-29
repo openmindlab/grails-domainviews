@@ -3,13 +3,13 @@ grails-domainsview
 
 Grails plugin that allows to define views via a custom DSL to convert Grails Domain Objects to maps.
  
-* Plugin will load views from files ending with Views placed in the grails-app/conf directory
+* Plugin will load views from files ending with Views placed in the `grails-app/conf` directory
 * domainViewsService injectable service
 * properties ignored when a view is applied
     * services (matching `/.*Service/` )
     * injected `grailsApplication`
     * `version`
-* handle properties of a domain
+* handled domain properties
     * collection of domains 
     * simple property    
     * embedded domain objects
