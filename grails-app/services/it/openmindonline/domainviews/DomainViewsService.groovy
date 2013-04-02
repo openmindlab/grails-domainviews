@@ -19,11 +19,18 @@ class DomainViewsService {
               map[it] = value instanceof Enum ? value.name() : value
             break
             case View:
-              map[it._name] = view(it,obj?."${it._name}");
+              def value = obj?."${it._name}"
+              map[it._name] = view(it,value);
             break
           }
         }
         return map
+      }
+    }
+
+    private view(viewDef, Collection collection){
+      collection?.collect{
+        view(viewDef,it)
       }
     }
 

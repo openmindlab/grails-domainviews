@@ -1,6 +1,6 @@
 package it.openmindonline.domainviews.test.dataobjects
 
-class ModelTest {
+class ModelTest implements Comparable{
     
     BrandTest brandTest
     String name
@@ -8,5 +8,9 @@ class ModelTest {
 
     static constraints = {
       modelVersion nullable:true
+    }
+
+    int compareTo(obj) {
+        name.compareTo(obj.name)
     }
 }
