@@ -109,6 +109,32 @@ class DomainViewsServiceTests {
     assert objectViews.size() == 0
   }
 
+  @Test
+  void 'getViewForDomainObject should return first definited views moving towards Object class'(){
+    setViews{
+      domainThatIsASuperClass {
+        standard ALL
+      }
+    }
+
+    def objectView = domainViewsService.getViewForDomainObject(DomainWithSuperClass,'standard')
+    assert objectView
+    assert objectView._name =='standard'
+  }
+
+  @Test
+  void 'getViewForDomainObject should return null if no views is definited'(){
+    setViews{
+      domainThatIsASuperClassOrThatDoesntExists {
+        standard ALL
+      }
+    }
+
+    def objectView = domainViewsService.getViewForDomainObject(DomainWithSuperClass,'standard')
+    assert objectView == null
+  }
+
+
   void setUp() {
     domainViewsService = new DomainViewsService()
     domainViewsService.grailsApplication = [config:[:]]
@@ -128,3 +154,5 @@ class DomainViewsServiceTests {
 
 class TestClass{}
 class TestClass2{}
+class DomainThatIsASuperClass{}
+class DomainWithSuperClass extends DomainThatIsASuperClass{}

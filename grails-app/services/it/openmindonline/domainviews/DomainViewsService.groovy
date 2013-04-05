@@ -44,7 +44,7 @@ class DomainViewsService {
 
     def applyView(String viewName, obj){
       if (obj != null) {
-        def viewDef = getViewsForDomainObject(obj.class)?."$viewName" 
+        def viewDef = getViewForDomainObject(obj.class,viewName)
         if(!viewDef) return obj
         view(viewDef,obj)
       }
@@ -59,7 +59,11 @@ class DomainViewsService {
     def getViewsForDomainObject(clazz){
       def name = !clazz ? false : GrailsNameUtils.getPropertyNameRepresentation(clazz)
       name ? grailsApplication.config.domainViews?."$name"?.views ?: [:] : [:]
-      
+    }
+
+    def getViewForDomainObject(clazz, viewName){
+      if(clazz == Object) return 
+      getViewsForDomainObject(clazz)?."$viewName" ?: getViewForDomainObject(clazz.superclass,viewName)
     }
 
     void normalize(clazz){
