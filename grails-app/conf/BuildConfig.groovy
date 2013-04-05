@@ -21,8 +21,11 @@ grails.project.dependency.resolution = {
         mavenRepo "http://download.java.net/maven/2/"
         mavenRepo "http://repository.jboss.com/maven2/"
         mavenRepo "https://releases.openmindonline.it/"
+        mavenRepo "https://oss.sonatype.org/content/repositories/snapshots/"
     }
+
     dependencies {
+        test "org.grails:grails-core:2.2.2.BUILD-SNAPSHOT", { exclude "grails" }
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
 
         // runtime 'mysql:mysql-connector-java:5.1.21'
