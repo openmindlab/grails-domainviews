@@ -6,8 +6,9 @@ class DomainWithEmbeddedProperties {
     static constraints = {
       property nullable: true
     }
+  
+  class EmbeddedDomainProperty {
+      String embddProperty
+  }
 }
 
-class EmbeddedDomainProperty {
-    String embddProperty
-}

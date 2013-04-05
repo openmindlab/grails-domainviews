@@ -437,38 +437,6 @@ class DomainViewsServiceTests extends BaseDomainViewsServiceTests{
   }
 
   @Test
-  void 'normalizing view of domain with embedded properties list all embedded properties, ALL properties from a domain'(){
-    setViews{
-      domainWithEmbeddedProperties {
-        standard ALL
-      }
-    }
-
-    domainViewsService.normalize(DomainWithEmbeddedProperties)
-    def standardView = views.domainWithEmbeddedProperties.views.standard
-    def embeddeView = standardView.properties.find{ it instanceof View }
-    assert embeddeView.properties.size()==1
-    assert embeddeView.properties.contains('embddProperty')
-  }
-
-  @Test
-  void 'normalizing view of domain with embedded properties list all embedded properties, EXTENDS properties of a domain'(){
-    setViews{
-      domainWithEmbeddedProperties {
-        standard {
-          EXTENDS
-        }
-      }
-    }
-
-    domainViewsService.normalize(DomainWithEmbeddedProperties)
-    def standardView = views.domainWithEmbeddedProperties.views.standard
-    def embeddeView = standardView.properties.find{ it instanceof View }
-    assert embeddeView.properties.size()==1
-    assert embeddeView.properties.contains('embddProperty')
-  }
-
-  @Test
   void 'enumeration should be rendered as String vith value enumeration name'(){
     setViews{
       domainWithEnumeration {
