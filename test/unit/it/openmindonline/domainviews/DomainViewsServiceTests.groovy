@@ -134,6 +134,18 @@ class DomainViewsServiceTests {
     assert objectView == null
   }
 
+  @Test
+  void 'getViewForDomainObject works if null is passed'(){
+    setViews{
+      domainThatIsASuperClass {
+        standard ALL
+      }
+    }
+
+    def objectView = domainViewsService.getViewForDomainObject(null,'standard')
+    assert objectView == null
+  }
+
 
   void setUp() {
     domainViewsService = new DomainViewsService()

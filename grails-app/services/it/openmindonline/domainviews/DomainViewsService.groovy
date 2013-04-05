@@ -62,8 +62,8 @@ class DomainViewsService {
     }
 
     def getViewForDomainObject(clazz, viewName){
-      if(clazz == Object) return 
-      getViewsForDomainObject(clazz)?."$viewName" ?: getViewForDomainObject(clazz.superclass,viewName)
+      if(clazz == Object || clazz == null) return 
+      getViewsForDomainObject(clazz)?."$viewName" ?: getViewForDomainObject(clazz?.superclass,viewName)
     }
 
     void normalize(clazz){
