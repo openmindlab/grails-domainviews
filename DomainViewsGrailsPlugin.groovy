@@ -19,7 +19,7 @@ class DomainViewsGrailsPlugin {
     def author = "Carlo Colombo"
     def authorEmail = "carlo.colombo@openmindonline.it"
     def description = '''\
-Brief summary/description of the plugin.
+Grails plugin that allows to define views via a custom DSL to convert beans to maps
 '''
 
     // URL to the plugin's documentation
