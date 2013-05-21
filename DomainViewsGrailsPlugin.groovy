@@ -57,7 +57,7 @@ Grails plugin that allows to define views via a custom DSL to convert beans to m
     }
 
     def loadAndNormalize(application){
-        def views = DomainViewsBuilder.load()
+        def views = DomainViewsBuilder.load(application)
         if (application.config.domainViewsConfig.defaultView){
             application.getArtefacts("Domain")
                 .findAll{

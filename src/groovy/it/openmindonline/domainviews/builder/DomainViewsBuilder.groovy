@@ -27,12 +27,12 @@ class DomainViewsBuilder{
     return domains
   }
 
-  def static load(){
+  def static load(application){
     GroovyClassLoader classLoader = new GroovyClassLoader(DomainViewsBuilder.classLoader)
     def views = []
     def viewMap = [:]
     //load all file from config ending in Views
-    new File('grails-app/conf').eachFileMatch( ~/.*Views\.groovy/ ){f -> 
+    application.mainContext.getResource('grails-app/conf').file.eachFileMatch( ~/.*Views\.groovy/ ){f -> 
       try {
         Class  domainsViews = classLoader.parseClass(f)
         log.info "${f.name} found"
