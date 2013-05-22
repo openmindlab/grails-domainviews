@@ -1,5 +1,6 @@
 package it.openmindonline.domainviews.builder
 
+import org.apache.commons.io.FilenameUtils
 import org.apache.commons.logging.LogFactory
 
 class DomainViewsBuilder{
@@ -28,21 +29,28 @@ class DomainViewsBuilder{
   }
 
   def static load(application){
-    GroovyClassLoader classLoader = new GroovyClassLoader(DomainViewsBuilder.classLoader)
+    GroovyClassLoader cl = new GroovyClassLoader(DomainViewsBuilder.classLoader)
     def views = []
     def viewMap = [:]
+    def ctx = application.mainContext
     //application.mainContext.getResource('classpath:').file.eachFileMatch( ~/.*Views\.groovy/ ){f -> 
     //load all file from config ending in Views
-    application.config.domainViewsConfig.viewsClasses.each{ f ->
-      try {
-        Class  domainsViews = classLoader.loadClass(f)
-        //log.info "${f.name} found"
-        domainsViews.metaClass.views = DomainViewsBuilder.&views
-        views << domainsViews.newInstance().run()
-      } catch (Exception ex) {
-        log.error "Error loading ${f}. $ex"
+
+    def viewFiles = []
+    !application.warDeployed && new File('grails-app/conf').eachFileMatch(~/.*Views\.groovy/){ viewFiles << it}
+    ctx.getResource('classpath:').file.eachFileMatch(~/.*Views\.class/ ){ viewFiles << it }
+
+    viewFiles.collect{
+      try{
+        return application.warDeployed ? cl.loadClass(FilenameUtils.getBaseName(it.name)) : cl.parseClass(it)
+      }catch(Exception e){
+         log.error "Error loading ${it}. $ex"
       }
+    }.findAll().each{ domainsViews ->
+      domainsViews.metaClass.views = DomainViewsBuilder.&views
+      views << domainsViews.newInstance().run()
     }
+
     views.each{
       it.each{ domainName, domain ->
         if(!viewMap.containsKey(domainName)){
