@@ -5,16 +5,18 @@ import org.junit.*
 
 class DomainViewsBuilderTests {
 
+    def grailsApplication    
+
     @Test
-    void 'load multiple files ending with Views, DomainViews.groovy and BrandTestViews.groovy'() {
-        def views = DomainViewsBuilder.load()
+    void load_multiple_files_ending_with_Views__DomainViews_groovy_and_BrandTestViews_groovy() {
+        def views = DomainViewsBuilder.load(grailsApplication)
         assert views
         assert views.size()==2 //2 domains
     }
 
     @Test
-    void 'mix different views from different file of the same domain'() {
-        def views = DomainViewsBuilder.load()
+    void mix_different_views_from_different_file_of_the_same_domain() {
+        def views = DomainViewsBuilder.load(grailsApplication)
         assert views.brandTest.views
         assert views.brandTest.views.size()==2
         assert views.brandTest.views.containsKey('standard')
