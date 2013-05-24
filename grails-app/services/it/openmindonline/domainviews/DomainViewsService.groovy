@@ -13,9 +13,9 @@ class DomainViewsService {
       if(obj != null){ 
         def map = [:]
         viewDef.properties.each{
-          switch(it.class) {
+          switch(it) {
             case String:
-              def value = obj?."$it"
+              def value = it in obj.properties ? obj?."$it" : null
               map[it] = value instanceof Enum ? value.name() : value
             break
             case View:
@@ -97,8 +97,8 @@ class DomainViewsService {
     }
 
     private normalizeProperty(domainClass, String propertyName){
-      def prop = domainClass.getPropertyByName(propertyName)
-      if (prop.association){
+      def prop = domainClass.hasPersistentProperty(propertyName) ? domainClass.getPropertyByName(propertyName) : null
+      if (prop?.association){
         new View(
             _name     : propertyName
           , properties: !prop.embedded ? ['id'] :

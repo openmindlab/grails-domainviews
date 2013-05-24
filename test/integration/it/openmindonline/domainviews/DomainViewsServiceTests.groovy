@@ -352,6 +352,39 @@ class DomainViewsServiceTests extends BaseDomainViewsServiceTests{
   }
 
   @Test
+  void 'normalize view with domain undefined properties'(){
+    setViews {
+      modelTest {
+        standard {
+          notAname
+        }
+      }
+    }
+    domainViewsService.normalize(ModelTest)
+    def view = views.modelTest.views.standard
+    assert view
+    assert view.properties
+    assert view.properties.find{ it == 'notAname'}
+  }
+
+  @Test
+  void 'applyView view with domain undefined properties'(){
+    setViews {
+      modelTest {
+        standard {
+          name
+          notAname
+        }
+      }
+    }
+    def modelTest = ModelTest.build(name:'modelTest')
+    def obj = domainViewsService.applyView('standard', modelTest)
+    assert obj.name == 'modelTest'
+    assert 'notAname' in obj.keySet()
+    assert obj.notAname == null
+  }
+
+  @Test
   void "apply view handle direct null property"(){
     setViews {
       vehicleTest {
