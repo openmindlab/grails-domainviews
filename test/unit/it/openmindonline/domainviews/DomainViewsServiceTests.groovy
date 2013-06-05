@@ -146,6 +146,23 @@ class DomainViewsServiceTests {
     assert objectView == null
   }
 
+  @Test
+  void 'visualization of falsy values'(){
+    setViews {
+      testClass3{
+        standard{
+          value
+        }
+      }
+    }
+
+    def obj1 = domainViewsService.applyView(new TestClass3(value:0 ))
+    def obj2 = domainViewsService.applyView(new TestClass3(value:''))
+    def obj3 = domainViewsService.applyView(new TestClass3(value:[]))
+    assert obj1.value == 0
+    assert obj2.value == ''
+    assert obj3.value == []
+  }
 
   void setUp() {
     domainViewsService = new DomainViewsService()
@@ -168,3 +185,6 @@ class TestClass{}
 class TestClass2{}
 class DomainThatIsASuperClass{}
 class DomainWithSuperClass extends DomainThatIsASuperClass{}
+class TestClass3{
+  def value
+}
