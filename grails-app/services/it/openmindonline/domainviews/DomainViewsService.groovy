@@ -45,7 +45,10 @@ class DomainViewsService {
     def applyView(String viewName, obj){
       if (obj != null) {
         def viewDef = getViewForDomainObject(obj.class,viewName)
-        if(!viewDef) return obj
+        if(!viewDef){
+          log.warn "View ${viewName} is not defined for obj ${obj} of class ${obj.class}"
+          return obj
+        }
         view(viewDef,obj)
       }
     }
