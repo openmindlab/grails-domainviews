@@ -44,18 +44,6 @@ Grails plugin that allows to define views via a custom DSL to convert beans to m
     // Online location of the plugin's browseable source code.
     def scm = [ url: "https://github.com/openmindlab/grails-domainviews" ]
 
-    def doWithWebDescriptor = { xml ->
-        // TODO Implement additions to web.xml (optional), this event occurs before
-    }
-
-    def doWithSpring = {
-        // TODO Implement runtime spring config (optional)
-    }
-
-    def doWithDynamicMethods = { ctx ->
-        // TODO Implement registering dynamic methods to classes (optional)
-    }
-
     def loadAndNormalize(application){
         def views = DomainViewsBuilder.load(application)
         if (application.config.domainViewsConfig.defaultView){
@@ -92,21 +80,13 @@ Grails plugin that allows to define views via a custom DSL to convert beans to m
     def watchedResources = "file:./grails-app/conf/*Views.groovy"
 
     def onChange = { event ->
-        // TODO Implement code that is executed when any artefact that this plugin is
-        // watching is modified and reloaded. The event contains: event.source,
-        // event.application, event.manager, event.ctx, and event.plugin.
-        // 
         loadAndNormalize(event.application)
     }
 
     def onConfigChange = { event ->
-        // TODO Implement code that is executed when the project configuration changes.
-        // The event is the same as for 'onChange'.
-        // println "onConfigChange ${event.source}"
         
     }
 
     def onShutdown = { event ->
-        // TODO Implement code that is executed when the application shuts down (optional)
     }
 }
