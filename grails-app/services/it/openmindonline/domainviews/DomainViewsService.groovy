@@ -102,7 +102,7 @@ class DomainViewsService {
     }
 
     private normalizeProperty(domainClass, String propertyName){
-      def prop = domainClass.hasPersistentProperty(propertyName) ? domainClass.getPropertyByName(propertyName) : null
+      def prop = domainClass?.hasPersistentProperty(propertyName) ? domainClass.getPropertyByName(propertyName) : null
       if (prop?.association){
         new View(
             _name     : propertyName
