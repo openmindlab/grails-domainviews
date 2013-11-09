@@ -65,6 +65,5 @@ class DomainViewWithEmbeddedTest extends BaseDomainViewsServiceTests {
     def coll = domainViewsService.applyView('standard', [b,b,b])
 
     assert coll in Collection
-    println coll
   }
 }
