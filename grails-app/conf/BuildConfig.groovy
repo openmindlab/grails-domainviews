@@ -20,26 +20,22 @@ grails.project.dependency.resolution = {
         mavenRepo "http://repository.codehaus.org"
         mavenRepo "http://download.java.net/maven/2/"
         mavenRepo "http://repository.jboss.com/maven2/"
-        mavenRepo "https://releases.openmindonline.it/"
         mavenRepo "https://oss.sonatype.org/content/repositories/snapshots/"
     }
 
     dependencies {
-        // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
-
-        // runtime 'mysql:mysql-connector-java:5.1.21'
+        test    'org.hamcrest:hamcrest-all:1.3'
+        compile 'org.springframework:spring-test:3.2.4.RELEASE'
     }
 
     plugins {
-        build(":tomcat:$grailsVersion",
-              ":release:2.2.0",
+        build(":release:3.0.1",
               ":rest-client-builder:1.0.3") {
             export = false
         }
 
-        build ":release:2.2.1"
-
-        test ":build-test-data:2.0.4"
-        test ":hibernate:$grailsVersion"
+        test ":tomcat:7.0.42"
+        test ":build-test-data:2.0.6"
+        test ":hibernate:3.6.10.3"
     }
 }
