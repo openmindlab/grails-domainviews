@@ -1,9 +1,10 @@
 package it.openmindonline.domainviews.builder
 
 import org.apache.commons.logging.LogFactory
+import org.apache.log4j.Logger
 
 class View{
-  static log = LogFactory.getLog("it.openmindonline.domainviews.builder.View")
+  static log = Logger.getLogger(View.class) 
   
   def _name
   def _normalized = false

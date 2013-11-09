@@ -2,11 +2,12 @@ package it.openmindonline.domainviews
 
 import grails.util.GrailsNameUtils
 import it.openmindonline.domainviews.builder.*
+import org.apache.log4j.Logger
 
 class DomainViewsService {
-
+    static log = Logger.getLogger(DomainViewsService.class)
+    
     def transactional = false
-
     def grailsApplication
 
     private view(viewDef, obj) {
@@ -74,6 +75,7 @@ class DomainViewsService {
       def domainClass = grailsApplication.getDomainClass(clazz.name)
       views.findAll{_,view -> !view._normalized}.each{ viewName,view ->
         views[viewName] = normalizeView domainClass, view
+        log.info "${clazz?.name}#$viewName"
       }
     }
 

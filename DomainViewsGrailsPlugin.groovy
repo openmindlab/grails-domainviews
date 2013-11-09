@@ -28,7 +28,7 @@ Grails plugin that allows to define views via a custom DSL to convert beans to m
     // Extra (optional) plugin metadata
 
     // License: one of 'APACHE', 'GPL2', 'GPL3'
-//    def license = "APACHE"
+    def license = "APACHE"
 
     // Details of company behind the plugin (if there is one)
     def organization = [ name: "Openmind", url: "http://www.openmindlab.com/" ]
@@ -78,14 +78,9 @@ Grails plugin that allows to define views via a custom DSL to convert beans to m
         if (views){
             application.config.domainViews = views
             def domainViewsService = new DomainViewsService(grailsApplication: application)
-            println "******************************** Normalizing views ********************************"
             application.config.domainViews.each{domainName,_ ->
                 def domainClass = application.getArtefactByLogicalPropertyName("Domain",domainName)
                 domainViewsService.normalize domainClass?.clazz
-                println "- $domainName [${domainClass?.clazz?.name}]"
-                application.config.domainViews[domainName]?.views?.each{viewName,_2 ->
-                    println "\t $viewName"
-                }
             }
         }
     }

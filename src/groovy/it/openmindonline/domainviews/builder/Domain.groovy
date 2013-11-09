@@ -1,9 +1,9 @@
 package it.openmindonline.domainviews.builder
 
-import org.apache.commons.logging.LogFactory
+import org.apache.log4j.Logger
 
 class Domain{
-  static log = LogFactory.getLog("it.openmindonline.domainviews.builder.Domain")
+  static log = Logger.getLogger(Domain.class)
 
   def views=[:]
 
