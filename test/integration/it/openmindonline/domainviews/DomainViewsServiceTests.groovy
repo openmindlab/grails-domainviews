@@ -457,16 +457,17 @@ class DomainViewsServiceTests extends BaseDomainViewsServiceTests{
       }
     }
 
-    def collection = [ModelTest.build(name:'Zafira'),ModelTest.build(name:'Astra')]
+    ModelTest.build(name:'Zafira')
+    ModelTest.build(name:'Astra')
 
-    def coll = domainViewsService.applyView('standard', collection)
+    def collection = domainViewsService.applyView('standard', ModelTest.list())
 
-    assert coll instanceof Collection
-    assert coll.size()==2
-    assert coll[0] instanceof Map
-    assert coll[1] instanceof Map
-    assert coll[0].name == 'Zafira'
-    assert coll[1].name == 'Astra'
+    assert collection instanceof Collection
+    assert collection.size()==2
+    assert collection[0] instanceof Map
+    assert collection[1] instanceof Map
+    assert collection[0].name == 'Zafira'
+    assert collection[1].name == 'Astra'
   }
 
   @Test
