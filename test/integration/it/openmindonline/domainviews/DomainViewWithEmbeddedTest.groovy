@@ -49,16 +49,6 @@ class DomainViewWithEmbeddedTest extends BaseDomainViewsServiceTests {
   }
 
   @Test
-  void 'coverter XML'(){    
-    def b = DomainWithEmbeddedProperties.build()
-    b.property = new DomainWithEmbeddedProperties.EmbeddedDomainProperty()
-    b.property.embddProperty = 'ola'
-    b.save(flush:true)
-
-    println b as XML
-  }
-
-  @Test
   void 'handling collection of domains with embedded properties'(){
     setViews{
       domainWithEmbeddedProperties{
