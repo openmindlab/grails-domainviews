@@ -25,7 +25,7 @@ grails.project.dependency.resolution = {
 
     dependencies {
         test    'org.hamcrest:hamcrest-all:1.3'
-        compile 'org.springframework:spring-test:3.2.4.RELEASE'
+        compile 'org.springframework:spring-test:3.2.5.RELEASE'
     }
 
     plugins {
