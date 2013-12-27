@@ -44,7 +44,7 @@ class DomainViewsBuilder{
       try{
         return application.warDeployed ? cl.loadClass(FilenameUtils.getBaseName(it.name)) : cl.parseClass(it)
       }catch(Exception e){
-         log.error "Error loading ${it}. $ex"
+         log.error "Error loading ${it}. $e"
       }
     }.findAll().each{ domainsViews ->
       domainsViews.metaClass.views = DomainViewsBuilder.&views
