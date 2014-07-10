@@ -87,6 +87,21 @@ class ComputedPropertiesTests extends BaseDomainViewsServiceTests {
   }
 
   @Test
+  void 'injecting the current date as _now'(){
+    setViews{
+      modelTest{
+        standard {
+          _computed 'a_date': { _now }
+        }
+      }
+    }
+
+    def map = domainViewsService.applyView(ModelTest.build(name:'Astra'))
+    assert map.a_date
+    assert map.a_date instanceof Date
+  }
+
+  @Test
   void 'working with normalization'(){
     setViews{
       modelTest{

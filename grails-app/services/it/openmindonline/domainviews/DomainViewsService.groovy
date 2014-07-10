@@ -12,8 +12,14 @@ class DomainViewsService {
     def grailsApplication
     def binding
 
-    private view(viewDef, obj) {
-      binding = [_ctx: grailsApplication.mainContext, _config: grailsApplication.config]
+    private view(viewDef, obj, binding = null) {
+      if(binding == null){
+        binding = [
+          _ctx: grailsApplication.mainContext,
+          _config: grailsApplication.config,
+          _now: new Date()
+        ]
+      }
       if(obj != null){ 
         def map = [:]
         viewDef.properties.each{
