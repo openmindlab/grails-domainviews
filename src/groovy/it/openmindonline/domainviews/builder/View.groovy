@@ -41,6 +41,12 @@ class View{
   def getALL(){
     new ViewAll()
   }
+
+  def _computed (Map map){
+    properties.addAll(map.collect{
+      new ComputedView( _name:it.key, cl: it.value.dehydrate() )
+    })
+  }
 }
 
 class ViewAll extends View{
@@ -49,4 +55,8 @@ class ViewAll extends View{
 
 class ExtendsView extends View{
   View _parent
+}
+
+class ComputedView extends View{
+  Closure cl
 }

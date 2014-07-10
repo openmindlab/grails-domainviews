@@ -3,14 +3,17 @@ package it.openmindonline.domainviews
 import grails.util.GrailsNameUtils
 import it.openmindonline.domainviews.builder.*
 import org.apache.log4j.Logger
+import groovy.lang.Binding
 
 class DomainViewsService {
     static log = Logger.getLogger(DomainViewsService.class)
     
     def transactional = false
     def grailsApplication
+    def binding
 
     private view(viewDef, obj) {
+      binding = [_ctx: grailsApplication.mainContext, _config: grailsApplication.config]
       if(obj != null){ 
         def map = [:]
         viewDef.properties.each{
@@ -18,6 +21,14 @@ class DomainViewsService {
             case String:
               def value = obj.properties.containsKey(it) ? obj?."$it" : null
               map[it] = value instanceof Enum ? value.name() : value
+            break
+            case ComputedView:
+              try{
+                def rehydratedCl = it.cl.rehydrate(binding << obj.properties, this, it.cl)
+                map[it._name] = rehydratedCl.call()
+              }catch(Throwable e){
+                log.error("Catched throwable generated on view ${viewDef._name} by computed property ${it._name} for obj $obj.",e)
+              }
             break
             case View:
               def value = obj?."${it._name}"

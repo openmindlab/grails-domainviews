@@ -180,4 +180,46 @@ class DomainViewsBuilderTests {
     assert views.model.views.standard._toExtend
 
   }
+
+  @Test
+  void 'support computed properties'(){
+    def views = DomainViewsBuilder.views{
+      model {
+        standard{
+          _computed value: {'value'}
+        }
+      }
+    }
+
+    assert views.model.views.standard instanceof View
+    assert views.model.views.standard.properties[0] instanceof ComputedView
+    def computed = views.model.views.standard.properties[0]
+    assert computed._name == 'value'
+    assert computed.cl instanceof Closure
+  }
+
+  @Test
+  void 'multiple computed properties'(){
+    def views = DomainViewsBuilder.views{
+      model {
+        standard{
+          _computed value: {'value'}
+          _computed value2: {'value2'}
+        }
+      }
+    }  
+    assert views.model.views.standard.properties*._name ==['value','value2']
+  }
+
+  @Test
+  void 'multiple computed properties on the same line'(){
+    def views = DomainViewsBuilder.views{
+      model {
+        standard{
+          _computed value: {'value'} , value2: {'value2'}
+        }
+      }
+    }  
+    assert views.model.views.standard.properties*._name == ['value','value2']
+  }
 }
