@@ -135,6 +135,10 @@ class DomainViewsService {
         }
     }
 
+    private normalizeProperty(domainClass, ComputedView view){
+      view
+    } 
+
     private normalizeProperty(domainClass, View view){
       def prop = domainClass.getPropertyByName(view._name)
       normalizeView(prop.referencedDomainClass, view)

@@ -24,7 +24,7 @@ class ComputedPropertiesTests extends BaseDomainViewsServiceTests {
       }
     }
 
-    def map = domainViewsService.applyView('standard', ModelTest.build(name:'Astra'))
+    def map = domainViewsService.applyView(ModelTest.build(name:'Astra'))
     assert map.altName == 'alt_Astra'
   }
 
@@ -38,7 +38,7 @@ class ComputedPropertiesTests extends BaseDomainViewsServiceTests {
       }
     }
 
-    def map = domainViewsService.applyView('standard', ModelTest.build(name:'Astra'))
+    def map = domainViewsService.applyView(ModelTest.build(name:'Astra'))
     assert map.value == 'value'
   }
 
@@ -53,7 +53,7 @@ class ComputedPropertiesTests extends BaseDomainViewsServiceTests {
       }
     }
 
-    def map = domainViewsService.applyView('standard', ModelTest.build(name:'Astra'))
+    def map = domainViewsService.applyView(ModelTest.build(name:'Astra'))
     assert map.valueException == null
     assert map.valueError     == null
   }
@@ -68,7 +68,7 @@ class ComputedPropertiesTests extends BaseDomainViewsServiceTests {
       }
     }
 
-    def map = domainViewsService.applyView('standard', ModelTest.build(name:'Astra'))
+    def map = domainViewsService.applyView(ModelTest.build(name:'Astra'))
     assert map.a_service
   }
 
@@ -82,7 +82,22 @@ class ComputedPropertiesTests extends BaseDomainViewsServiceTests {
       }
     }
 
-    def map = domainViewsService.applyView('standard', ModelTest.build(name:'Astra'))
+    def map = domainViewsService.applyView(ModelTest.build(name:'Astra'))
     assert map.a_config
+  }
+
+  @Test
+  void 'working with normalization'(){
+    setViews{
+      modelTest{
+        standard {
+          _computed value: { "value" }
+        }
+      }
+    }
+
+    domainViewsService.normalize(ModelTest)
+    def map = domainViewsService.applyView(ModelTest.build(name:'Astra'))
+    assert map.value == 'value'
   }
 }
