@@ -66,4 +66,28 @@ class DomainViewWithEmbeddedTest extends BaseDomainViewsServiceTests {
 
     assert coll in Collection
   }
+
+  @Test
+  void 'normalizing view of domain with embedded properties with calculated property'(){
+    setViews{
+      domainWithEmbeddedProperties {
+        standard {
+          property{
+            EXTENDS
+            _computed value : {embddProperty}
+          }
+        }
+      }
+    }
+
+    domainViewsService.normalize(DomainWithEmbeddedProperties)
+
+    def standardView = views.domainWithEmbeddedProperties.views.standard
+    def embeddeView = standardView.properties.find{ it instanceof View }
+    
+    assert embeddeView.properties.size() == 3
+    assert 'id' in embeddeView.properties
+    assert 'embddProperty' in embeddeView.properties
+    assert embeddeView.properties.find({it instanceof ComputedView})._name == 'value'
+  }
 }

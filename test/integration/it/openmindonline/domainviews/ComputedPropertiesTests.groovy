@@ -115,4 +115,39 @@ class ComputedPropertiesTests extends BaseDomainViewsServiceTests {
     def map = domainViewsService.applyView(ModelTest.build(name:'Astra'))
     assert map.value == 'value'
   }
+
+  @Test
+  void 'computed properties of nested associations'(){
+    setViews{
+      modelTest{
+        standard {
+          brandTest{
+            _computed value: { "value$name" }
+          }
+        }
+      }
+    }
+
+    domainViewsService.normalize(ModelTest)
+    def map = domainViewsService.applyView(ModelTest.build(name:'Astra', brandTest: BrandTest.build(name:'Opel')))
+    assert map.brandTest.value == 'valueOpel' 
+  }
+
+  @Test
+  void 'computed properties with EXTENDS'(){
+    setViews{
+      modelTest{
+        standard {
+          EXTENDS
+          _computed value: { "value" }
+        }
+      }
+    }
+
+    domainViewsService.normalize(ModelTest)
+    def map = domainViewsService.applyView(ModelTest.build(name:'Astra'))
+    assert map.containsKey('value')
+    assert map.containsKey('id')
+    assert map.containsKey('name')
+  }
 }

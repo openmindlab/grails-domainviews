@@ -95,22 +95,28 @@ class DomainViewsService {
         log.info "${clazz?.name}#$viewName"
       }
     }
+    
+    private normalizeView(domainClass, ComputedView view){
+      view
+    }
 
     private normalizeView(domainClass, View view){
-      def properties = view._toExtend ? 
+      def properties = (view._toExtend ? 
         domainClass.properties
           .findAll(filterProperties)*.name.collect{ domainProperty ->
-            view.properties.find{
-              viewProperty -> viewProperty._name == domainProperty
-            } ?: domainProperty
-          } : view.properties
+            view.properties.find{viewProperty ->
+              viewProperty._name == domainProperty
+            } ?: domainProperty 
+          } : view.properties) + view.properties.findAll({it instanceof ComputedView})
 
       view.properties = properties.collect{property -> 
         normalizeProperty(domainClass, property)
       }
+
       view._normalized = true
       view
     }
+
 
     private normalizeView(domainClass, ViewAll view){
       def newView = new View(_name:view._name)
@@ -124,7 +130,9 @@ class DomainViewsService {
         new View(
             _name     : propertyName
           , properties: !prop.embedded ? ['id'] :
-              prop.component.properties.findAll(filterProperties).findAll({it.name!='id'})*.name  )
+              prop.component.properties
+                .findAll(filterProperties)
+                .findAll({it.name!='id'})*.name  )
       }else{
         propertyName
       }
@@ -147,7 +155,7 @@ class DomainViewsService {
 
     private normalizeProperty(domainClass, View view){
       def prop = domainClass.getPropertyByName(view._name)
-      normalizeView(prop.referencedDomainClass, view)
+      normalizeView(prop.embedded ? prop.component : prop.referencedDomainClass, view)
     }
 
 }
