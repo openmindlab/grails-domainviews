@@ -56,3 +56,29 @@ assert map == [title: "Dirk Gently's Holistic Detective Agency"
                   , author: [id: 2] ]
 ```
 `ALL` load all properties of a domain object, if a property is an association the `id` is loaded
+
+##Load all properties of a domain with some extension
+```groovy
+views{
+  book {        
+    standard {
+      EXTEND  // special value
+      author {
+        name
+      }
+    }
+  }
+}
+
+def map = domainViewsService.applyView('standard', new Book(
+                                              isbn:'0-671-69267-4'
+                                             ,author: new Author(name:'Douglas Adams')
+                                             ,title:"Dirk Gently's Holistic Detective Agency")
+                                             
+assert map == [title: "Dirk Gently's Holistic Detective Agency"
+                  , id: 1
+                  , isbn:'0-671-69267-4'
+                  , author: [
+                      name:'Douglas Adams'] ]
+```
+`EXTEND` load all properties of a domain object, allowing to load specific properties of associations. A shortcut to define all properties of a domain and association properties.
