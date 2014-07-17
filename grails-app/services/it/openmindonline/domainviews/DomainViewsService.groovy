@@ -10,16 +10,8 @@ class DomainViewsService {
     
     def transactional = false
     def grailsApplication
-    def binding
 
-    private view(viewDef, obj, binding = null) {
-      if(binding == null){
-        binding = [
-          _ctx: grailsApplication.mainContext,
-          _config: grailsApplication.config,
-          _now: new Date()
-        ]
-      }
+    private view(viewDef, obj, now = new Date()) {
       if(obj != null){ 
         def map = [:]
         viewDef.properties.each{
@@ -30,6 +22,12 @@ class DomainViewsService {
             break
             case ComputedView:
               try{
+                def binding = [
+                  id: obj.id,
+                  _ctx: grailsApplication.mainContext,
+                  _config: grailsApplication.config,
+                  _now: now,
+                ]      
                 def rehydratedCl = it.cl.rehydrate(binding << obj.properties, this, it.cl)
                 map[it._name] = rehydratedCl.call()
               }catch(Throwable e){
@@ -38,7 +36,7 @@ class DomainViewsService {
             break
             case View:
               def value = obj?."${it._name}"
-              map[it._name] = view(it,value);
+              map[it._name] = view(it,value, now);
             break
           }
         }
@@ -46,9 +44,9 @@ class DomainViewsService {
       }
     }
 
-    private view(viewDef, Collection collection){
+    private view(viewDef, Collection collection, Date now){
       collection?.collect{
-        view(viewDef,it)
+        view(viewDef,it, now)
       }
     }
 

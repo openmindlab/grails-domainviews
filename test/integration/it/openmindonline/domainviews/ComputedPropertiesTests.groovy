@@ -150,4 +150,20 @@ class ComputedPropertiesTests extends BaseDomainViewsServiceTests {
     assert map.containsKey('id')
     assert map.containsKey('name')
   }
+
+  @Test
+  void 'computed properties with an id'(){
+    setViews{
+      modelTest{
+        standard {
+          name
+          _computed value: { id }
+        }
+      }
+    }
+
+    domainViewsService.normalize(ModelTest)
+    def map = domainViewsService.applyView(ModelTest.build(name:'Astra'))
+    assert map.value
+  }
 }
